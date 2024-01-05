@@ -7,16 +7,18 @@ export const styles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         justifyContent: 'flex-start',
-      
-        textAlign: 'center',
-        alignItems: 'center',
         backgroundColor: 'black'
     },
     imageContainer: {
-        height: '30%',
-        width: '50%',
-        marginTop: '40%',
-        marginBottom: '10%'
+        height:'30%',
+        width:'60%', 
+        marginTop:'15%',
+        marginLeft:'20%',
+        marginBottom:'20%',    
+    },
+    image: {
+        height: '100%',
+        width: '100%',       
     },
     inputContainer: {
         display: 'flex',
@@ -24,17 +26,16 @@ export const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         textAlign:'center',
+        color:'black',
         width: '100%'
     },
     emailInput: {
-        backgroundColor: 'white',
         width: '70%',
         marginBottom: '5%',
         borderWidth:2,
         borderColor:'blue'
     },
     passwordInput: {
-        backgroundColor: 'white',
         width: '70%',
         marginBottom: '5%',
         borderWidth:2,
@@ -43,24 +44,39 @@ export const styles = StyleSheet.create({
     text: {
         color: 'white',
     },
+    checkContainer:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        marginBottom:10
+    },
     buttonContainer: {
         backgroundColor: 'blue',
         alignItems: 'center',
         alignContent:'center',
         justifyContent:'center',
         width: '50%',
-        height:'5%',
+        height:30,
         borderRadius: 10,
+        marginBottom:'10%'
+    },
+    enterButton:{
+        display:'flex',
+        alignItems:'center',      
     },
     bottomButtonContainer:{
         display:'flex',
         flexDirection:'row',
         justifyContent:'space-around',
-        marginTop:'5%'
     },
-    registerButton:{
-        backgroundColor:'blue',
-        color:'white',
+    bottomButtons:{
+        backgroundColor: 'blue',
+        alignItems: 'center',
+        alignContent:'center',
+        justifyContent:'center',
+        width: '30%',
+        height:30,
+        borderRadius: 10,
     },
     textButton: {
         color: 'white'

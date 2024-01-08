@@ -4,6 +4,7 @@ import Home from './src/screens/Home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/screens/Login';
 import Register from './src/screens/Register';
+import ForgotPassword from './src/screens/ForgotPassword';
 
 
 
@@ -17,8 +18,9 @@ function App(): JSX.Element {
         headerShown: false,
       }}
       >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="login" component={Login} options={{title:'Login'}}/>
+        <Stack.Screen name="register" component={Register} options={{title:'Register'}}/>
+        <Stack.Screen name="forgotPassword" component={ForgotPassword} options={{title:'ForgotPassword'}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

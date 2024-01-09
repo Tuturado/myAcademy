@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 
 function Register() {
@@ -10,6 +11,7 @@ function Register() {
     const [senha, setSenha] = useState<string>('');
     const [confirmaSenha, setConfirmaSenha] = useState<string>('');
     const [equalPassword, setEqualPassword] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
 
@@ -21,7 +23,16 @@ function Register() {
       else{
         setEqualPassword(true);
       }
-    },[confirmaSenha])
+    },[confirmaSenha]);
+
+    const handleNewAccount = () => {
+      setLoading(true);
+      auth()
+      .createUserWithEmailAndPassword(email, senha)
+      .then(()=>{Alert.alert("Conta", "Cadastrado com sucesso!")})
+      .catch((error)=>console.log(error))
+      .finally(()=>setLoading(false));
+    };
 
     return (
       <View style={styles.container}>
@@ -58,7 +69,7 @@ function Register() {
       </View>
 
       <View style={styles.enterButton}>
-        <TouchableOpacity onPress={()=>{console.log('CLICK');}} disabled={email.length!=0 && equalPassword == true ? false : true} style={styles.buttonContainer}>
+        <TouchableOpacity onPress={()=>handleNewAccount()} disabled={email.length!=0 && equalPassword == true ? false : true} style={styles.buttonContainer}>
           <Text style={styles.textButton}>Cadastrar</Text>
         </TouchableOpacity>
       </View>

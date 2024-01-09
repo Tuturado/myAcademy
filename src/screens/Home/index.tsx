@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 function Home() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
+        <Text style={{color:'black'}}>Home Screen</Text>
       </View>
     );
 }

@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Image, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Button, Image, Text, TouchableOpacity, View, TextInput, Alert } from 'react-native';
 import { NavigationContainer, NavigationProp, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Register from '../Register';
 import { styles } from './styles';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import auth from '@react-native-firebase/auth';
 
 function ForgotPassword() {
     const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
     const [email, setEmail] = useState<string>('');
-    const [senha, setSenha] = useState<string>('');
-    const [exibirSenha, setExibirSenha] = useState<boolean>(false);
 
     useEffect(() => {
         console.log('EMAIL: ', email);
     }, [email]);
+
+    const handleForgotPassword = ()=>{
+        auth()
+        .sendPasswordResetEmail(email)
+        .then(()=>{Alert.alert("Redefinir senha", "Enviamos um email para você!")})
+        .catch(error => console.log(error))
+    };
 
     return (
         <View style={styles.container}>
@@ -39,7 +45,7 @@ function ForgotPassword() {
 
             </View>
             <View style={styles.enterButton}>
-                <TouchableOpacity onPress={() => { console.log('ENTRAR'); }} style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => handleForgotPassword()} style={styles.buttonContainer}>
                     <Text style={styles.textButton}>Recuperar Conta</Text>
                 </TouchableOpacity>
             </View>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Image, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Button, Image, Text, TouchableOpacity, View, TextInput, Alert } from 'react-native';
 import { NavigationContainer, NavigationProp, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Register from '../Register';
 import { styles } from './styles';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import auth from '@react-native-firebase/auth';
+
 
 function Login() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
@@ -22,7 +24,18 @@ function Login() {
 
   useEffect(()=>{
     console.log('EXIBIR SENHA: ', exibirSenha);
-  },[exibirSenha])
+  },[exibirSenha]);
+
+  const handleSign = ()=>{
+    auth()
+    .signInWithEmailAndPassword(email, senha)
+    .then(()=>{
+      Alert.alert("Logado com sucesso!");
+      navigation.navigate('home');   
+    })
+    .catch((error)=>console.log(error))
+
+  };
 
   return (
     <View style={styles.container}>
@@ -64,7 +77,7 @@ function Login() {
       </View>
 
       <View style={styles.enterButton}>
-        <TouchableOpacity onPress={()=>{console.log('ENTRAR');}} style={styles.buttonContainer}>
+        <TouchableOpacity onPress={()=>handleSign()} style={styles.buttonContainer}>
           <Text style={styles.textButton}>Entrar</Text>
         </TouchableOpacity>
       </View>

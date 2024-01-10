@@ -19,7 +19,10 @@ function ForgotPassword() {
         auth()
         .sendPasswordResetEmail(email)
         .then(()=>{Alert.alert("Redefinir senha", "Enviamos um email para você!")})
-        .catch(error => console.log(error))
+        .catch(error =>{
+            console.log(error);
+            Alert.alert("Ops!", "Algo deu errado ao fazer o seu cadastro");
+        })
     };
 
     return (

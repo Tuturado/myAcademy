@@ -30,7 +30,10 @@ function Register() {
       auth()
       .createUserWithEmailAndPassword(email, senha)
       .then(()=>{Alert.alert("Conta", "Cadastrado com sucesso!")})
-      .catch((error)=>console.log(error))
+      .catch((error)=>{
+        console.log(error);
+        Alert.alert("Ops!", "Algo deu errado ao fazer o cadastro!");
+      })
       .finally(()=>setLoading(false));
     };
 

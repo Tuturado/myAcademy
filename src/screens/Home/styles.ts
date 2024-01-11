@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         display: 'flex',
+        flexWrap:'nowrap',
         width: '100%',
         height: '100%',
         margin: 0,
@@ -31,12 +32,9 @@ export const styles = StyleSheet.create({
         height:30,
     },
     plusButtonContainer:{
-        top:680,
-        position:'relative',
+        top:'80%',
         paddingRight:20,
         alignItems:'flex-end',
-        justifyContent:'flex-end',
-        alignContent:'center',
         borderColor:'red',
         border: 5
     },
@@ -44,11 +42,12 @@ export const styles = StyleSheet.create({
         backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent:'center',
-        width: '10%',
-        height:40,
+        width: '15%',
+        height:60,
         borderRadius: 100,
     },
     textButton: {
-        color: 'white'
+        color: 'white',
+        fontSize:20
     }
 });

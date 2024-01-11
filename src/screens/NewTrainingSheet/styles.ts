@@ -2,22 +2,13 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
-        margin: 0,
+        display: 'flex',
+        alignItems:'center',
         width: '100%',
         height: '100%',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        backgroundColor: 'black'
-    },
-    imageContainer: {
-        height:'30%',
-        width:'60%', 
-        marginTop:'30%',
-        marginLeft:'20%'   
-    },
-    image: {
-        height: '100%',
-        width: '100%',       
+        margin: 0,
+        backgroundColor: '#555',
+        color:'white'
     },
     screenTitle:{
         display:'flex',
@@ -26,18 +17,24 @@ export const styles = StyleSheet.create({
         color:'white',
         fontSize:30
     },
+    selectBoxContainer:{
+        width:'90%',
+    },
     inputContainer: {
         display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
         textAlign:'center',
-        color:'black',
-        width: '100%'
+        flexDirection:'row',
+        width:370,        
+        marginTop:'5%',
+        marginBottom:'2%'
+
     },
-    emailInput: {
-        width: '70%',
-        marginBottom: '5%',
+    nomeExercicio: {
+        width: '50%',
+        margin:5,
         borderWidth:2,
         borderColor:'blue'
     },
@@ -47,45 +44,21 @@ export const styles = StyleSheet.create({
         borderWidth:2,
         borderColor:'blue'
     },
-    text: {
-        color: 'white',
+    registerButtonContainer:{
+        padding:20,
+        width:'100%',
+        alignItems:'center'
     },
-    checkContainer:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'center',
-        marginBottom:10
-    },
-    buttonContainer: {
-        backgroundColor: 'blue',
-        alignItems: 'center',
-        alignContent:'center',
-        justifyContent:'center',
-        width: '50%',
-        height:30,
-        borderRadius: 10,
-        marginBottom:'10%'
-    },
-    enterButton:{
-        display:'flex',
-        alignItems:'center',   
-        marginTop:'5%'   
-    },
-    bottomButtonContainer:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-around',
-    },
-    bottomButtons:{
+    registerButton:{
         backgroundColor: 'blue',
         alignItems: 'center',
         alignContent:'center',
         justifyContent:'center',
         width: '30%',
         height:30,
-        borderRadius: 10,
     },
-    textButton: {
-        color: 'white'
-    }
+    text: {
+        color: 'white',
+    },
+   
 });

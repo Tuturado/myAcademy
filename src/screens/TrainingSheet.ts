@@ -1,4 +1,4 @@
-export class TrainingSheet{
-    
+export type TrainingSheet = {
+    id: string,
 };
 

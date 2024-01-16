@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 
@@ -46,7 +47,21 @@ function NewTrainingSheet() {
 
   useEffect(() => {
     console.log('FICHA DE TREINO', fichaTreino);
-  }, [fichaTreino])
+  }, [fichaTreino]);
+
+  function handleNewTraining (){
+    firestore()
+    .collection('fichaTreino')
+    .add({
+      fichaTreino,
+      created_at: firestore.FieldValue.serverTimestamp()
+    })
+    .then(()=> Alert.alert("Treino", "Treino Criado com sucesso!"))
+    .catch((error)=>{
+      console.error(error);
+      Alert.alert("Ops!", "Parece que houve um problema ao cadastrar o treino!");
+    })
+  };
 
   return (
     <>
@@ -110,8 +125,8 @@ function NewTrainingSheet() {
 
         <View style={styles.bottomButtonsContainer}>
           <View style={styles.registerButtonContainer}>
-            <TouchableOpacity onPress={() => console.log('CADASTRA NO FIREBASE')} style={styles.registerButton}>
-              <Text style={styles.text}>Cadastrar Ficha</Text>
+            <TouchableOpacity onPress={() => handleNewTraining()} style={styles.registerButton}>
+              <Text style={styles.text}>Cadastrar Treino</Text>
             </TouchableOpacity>
           </View>
 

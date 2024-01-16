@@ -2,10 +2,9 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
+        flex:1,
         display: 'flex',
         alignItems:'center',
-        width: '100%',
-        height: '100%',
         margin: 0,
         backgroundColor: '#555',
         color:'white'
@@ -14,6 +13,7 @@ export const styles = StyleSheet.create({
         display:'flex',
         textAlign:'center',
         marginBottom:'5%',
+        marginTop:'5%',
         color:'white',
         fontSize:30
     },
@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
         width:'90%',
     },
     inputContainer: {
-        display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
@@ -56,6 +55,12 @@ export const styles = StyleSheet.create({
         justifyContent:'center',
         width: '30%',
         height:30,
+    },
+    bottomButtonsContainer:{
+        width:'100%',
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems:'center',
     },
     text: {
         color: 'white',

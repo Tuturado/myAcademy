@@ -3,9 +3,10 @@ import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import auth from '@react-native-firebase/auth';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 function NewTrainingSheet() {
-
+  const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
   const [diaSemana, setDiaSemana] = useState<string>("");
   const [periodo, setPeriodo] = useState<string>("");
 
@@ -64,7 +65,7 @@ function NewTrainingSheet() {
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'series')}
-            value={fichaTreino.series}
+            //value={fichaTreino.series}
             placeholder="Series"
             keyboardType="numeric"
           />
@@ -74,14 +75,14 @@ function NewTrainingSheet() {
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'repeticoes')}
-            value={fichaTreino.repeticoes}
+            //value={fichaTreino.repeticoes}
             placeholder="Repetições"
             keyboardType="numeric"
           />
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'peso')}
-            value={fichaTreino.peso}
+            //value={fichaTreino.peso}
             placeholder="Peso"
             keyboardType="numeric"
           />
@@ -107,12 +108,20 @@ function NewTrainingSheet() {
           />
         </View>
 
+        <View style={styles.bottomButtonsContainer}>
+          <View style={styles.registerButtonContainer}>
+            <TouchableOpacity onPress={() => console.log('CADASTRA NO FIREBASE')} style={styles.registerButton}>
+              <Text style={styles.text}>Cadastrar Ficha</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.registerButtonContainer}>
-          <TouchableOpacity onPress={() => console.log('CADASTRA NO FIREBASE')} style={styles.registerButton}>
-            <Text style={styles.text}>Cadastrar Ficha</Text>
-          </TouchableOpacity>
+          <View style={styles.registerButtonContainer}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.registerButton}>
+              <Text style={styles.text}>Voltar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
 
       </View>
     </>

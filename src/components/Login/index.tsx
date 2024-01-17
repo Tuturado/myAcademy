@@ -12,25 +12,36 @@ const FormLogin = () => {
     const [email, setEmail] = useState<string>('');
     const [senha, setSenha] = useState<string>('');
     const [exibirSenha, setExibirSenha] = useState<boolean>(false);
-    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
-  
+    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+    const [disabledEntry, setDisabledEntry] = useState<boolean>(true)
+
     const handleSign = () => {
-      auth()
-        .signInWithEmailAndPassword(email, senha)
-        .then(() => {
-          Alert.alert("Logado com sucesso!");
-        })
-        .catch((error) =>{
-          console.log(error);
-          Alert.alert("Ops!", "Algo deu errado ao logar!");
-        })
+        auth()
+            .signInWithEmailAndPassword(email, senha)
+            .then(() => {
+                Alert.alert("Logado com sucesso!");
+            })
+            .catch((error) => {
+                console.log(error);
+                Alert.alert("Ops!", "Algo deu errado ao logar!");
+            })
     };
-  
+
+    useEffect(()=>{
+        if(email.length==0 || senha.length==0 ){
+            setDisabledEntry(true);
+        }
+        else{
+            setDisabledEntry(false);
+        }
+    },[email, senha])
+
+
     useEffect(() => {
-      const subscriber = auth().onAuthStateChanged(setUser);
-      setEmail('');
-      setSenha('');
-      return subscriber;
+        const subscriber = auth().onAuthStateChanged(setUser);
+        setEmail('');
+        setSenha('');
+        return subscriber;
     }, []);
 
 
@@ -38,7 +49,7 @@ const FormLogin = () => {
         <>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/myAcademy.png')} style={styles.image} />
+                    <Image source={require('../assets/img/myAcademy.png')} style={styles.image} />
                 </View>
 
                 <Text style={styles.screenTitle}>Entrar</Text>
@@ -75,7 +86,7 @@ const FormLogin = () => {
                 </View>
 
                 <View style={styles.enterButton}>
-                    <TouchableOpacity onPress={() => handleSign()} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => handleSign()} disabled={disabledEntry ? true : false} style={{backgroundColor: disabledEntry ? 'gray' : 'blue', alignItems:'center', alignContent:'center', justifyContent:'center', width:'50%', height:30, borderRadius:10, marginBottom:'10%'}}>
                         <Text style={styles.textButton}>Entrar</Text>
                     </TouchableOpacity>
                 </View>
@@ -88,6 +99,11 @@ const FormLogin = () => {
                         <Text style={styles.textButton}>Esqueci a senha</Text>
                     </TouchableOpacity>
                 </View>
+                <View style={styles.textBottomContainer}>
+                    <Text style={styles.textBottoms}>O que há de novo?</Text>
+                    <Text style={styles.textBottoms}>Versão 1.0</Text>
+                </View>
+
             </View>
 
         </>

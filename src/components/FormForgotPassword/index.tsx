@@ -26,7 +26,7 @@ const FormForgotPassword = () =>{
         <>
              <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/myAcademy.png')} style={styles.image} />
+                    <Image source={require('../assets/img/myAcademy.png')} style={styles.image} />
                 </View>
 
                 <Text style={styles.screenTitle}>Esqueci a Senha</Text>

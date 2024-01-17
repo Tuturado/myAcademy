@@ -2,9 +2,8 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
+        flex:1,
         margin: 0,
-        width: '100%',
-        height: '100%',
         display: 'flex',
         justifyContent: 'flex-start',
         backgroundColor: 'black'
@@ -87,5 +86,13 @@ export const styles = StyleSheet.create({
     },
     textButton: {
         color: 'white'
+    },
+    textBottomContainer:{
+        marginTop:'5%'
+    },
+    textBottoms:{
+        textAlign:'center',
+        color:'white'
     }
+
 });

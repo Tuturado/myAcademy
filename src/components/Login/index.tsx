@@ -86,7 +86,7 @@ const FormLogin = () => {
                 </View>
 
                 <View style={styles.enterButton}>
-                    <TouchableOpacity onPress={() => handleSign()} disabled={disabledEntry ? true : false} style={{backgroundColor: disabledEntry ? 'gray' : 'blue', alignItems:'center', alignContent:'center', justifyContent:'center', width:'50%', height:30, borderRadius:10, marginBottom:'10%'}}>
+                    <TouchableOpacity onPress={() => handleSign()} disabled={disabledEntry ? true : false} style={[{backgroundColor: disabledEntry ? 'gray' : 'blue'}, styles.buttonContainer]}>
                         <Text style={styles.textButton}>Entrar</Text>
                     </TouchableOpacity>
                 </View>
@@ -101,7 +101,7 @@ const FormLogin = () => {
                 </View>
                 <View style={styles.textBottomContainer}>
                     <Text style={styles.textBottoms}>O que há de novo?</Text>
-                    <Text style={styles.textBottoms}>Versão 1.0</Text>
+                    <Text style={styles.text}>Versão 1.0</Text>
                 </View>
 
             </View>

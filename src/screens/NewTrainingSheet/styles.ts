@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     },
     selectBoxContainer:{
         width:'90%',
+        marginBottom:'5%'
     },
     inputContainer: {
         justifyContent: 'center',
@@ -26,7 +27,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign:'center',
         flexDirection:'row',
-        width:370,        
+        width:360,        
         marginTop:'5%',
         marginBottom:'2%'
 
@@ -54,7 +55,7 @@ export const styles = StyleSheet.create({
         alignContent:'center',
         justifyContent:'center',
         width: '30%',
-        height:30,
+        height:40,
     },
     bottomButtonsContainer:{
         width:'100%',

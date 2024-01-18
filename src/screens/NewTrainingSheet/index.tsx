@@ -5,20 +5,19 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { TrainingSheet } from '../TrainingSheet';
 
 function NewTrainingSheet() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
-  const [diaSemana, setDiaSemana] = useState<string>("");
-  const [periodo, setPeriodo] = useState<string>("");
 
-
-  const exercicio = {
+  const exercicio: TrainingSheet = {
     nome: '',
-    series: 0,
-    repeticoes: 0,
-    peso: 0,
+    series: '',
+    repeticoes: '',
+    peso: '',
     diaSemana: '',
     periodo: '',
+    status:'Pendente'
   }
 
   const [fichaTreino, setFichaTreino] = useState(exercicio);
@@ -41,7 +40,7 @@ function NewTrainingSheet() {
   ]
 
 
-  const handleOnchange = (text: any, input: any) => {
+  const handleOnchange = (text: string | number, input: string | number) => {
     setFichaTreino(prevState => ({ ...prevState, [input]: text }));
   };
 
@@ -56,12 +55,17 @@ function NewTrainingSheet() {
       fichaTreino,
       created_at: firestore.FieldValue.serverTimestamp()
     })
-    .then(()=> Alert.alert("Treino", "Treino Criado com sucesso!"))
+    .then(()=> {
+      Alert.alert("Treino", "Treino Criado com sucesso!")
+      //limpar os estados dos inputs
+      setFichaTreino(exercicio);
+    })
     .catch((error)=>{
       console.error(error);
       Alert.alert("Ops!", "Parece que houve um problema ao cadastrar o treino!");
     })
   };
+
 
   return (
     <>
@@ -80,7 +84,8 @@ function NewTrainingSheet() {
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'series')}
-            //value={fichaTreino.series}
+            value={fichaTreino.series.toString()}
+            maxLength={3}
             placeholder="Series"
             keyboardType="numeric"
           />
@@ -90,14 +95,16 @@ function NewTrainingSheet() {
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'repeticoes')}
-            //value={fichaTreino.repeticoes}
+            value={fichaTreino.repeticoes.toString()}
+            maxLength={30}
             placeholder="Repetições"
             keyboardType="numeric"
           />
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'peso')}
-            //value={fichaTreino.peso}
+            value={fichaTreino.peso.toString()}
+            maxLength={3}
             placeholder="Peso"
             keyboardType="numeric"
           />

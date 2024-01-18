@@ -4,6 +4,7 @@ import { styles } from './styles';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { TrainingSheet } from '../TrainingSheet';
 
 function Home() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
@@ -44,22 +45,23 @@ function Home() {
     series: string | number
   };
 
-  const Item = ({ diaDaSemana, nome, periodo, peso, repeticoes, series }: ItemProps) => (
+  const Item = ({ diaSemana, nome, periodo, peso, repeticoes, series, status }: TrainingSheet) => (
     <View style={styles.item} >
-      <Text>Dia da Semana: {diaDaSemana}</Text>
+      <Text>Dia da Semana: {diaSemana}</Text>
       <Text>Nome do Exercício: {nome}</Text>
       <Text>Período de treino: {periodo}</Text>
       <Text>Peso: {peso} kg</Text>
       <Text>Repetições: {repeticoes}</Text>
       <Text>Series: {series}</Text>
+      <Text>Status: {status}</Text>
     </View>
   );
 
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        <View>
+    
+        <View style={styles.container}>
           <View style={styles.exitButtonContainer}>
             <TouchableOpacity onPress={() => handleSignOut()} style={styles.exitButton}>
               <Text style={styles.text}>Sair</Text>
@@ -67,7 +69,7 @@ function Home() {
           </View>
           {treinos.length != 0 ? <FlatList
             data={treinos}
-            renderItem={({ item }) => <Item diaDaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} />}
+            renderItem={({ item }) => <Item diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} />}
             keyExtractor={item => item.id}
           /> : <Text>Ainda não existem treinos cadastrados, clique no botão para adicionar!</Text>}
 
@@ -78,7 +80,7 @@ function Home() {
           </View>
 
         </View>
-      </ScrollView>
+     
     </>
   );
 }

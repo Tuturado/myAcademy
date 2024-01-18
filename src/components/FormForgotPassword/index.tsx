@@ -4,13 +4,9 @@ import { Alert, Image, Text, TextInput, TouchableOpacity, View } from "react-nat
 import { styles } from "./styles";
 import auth from '@react-native-firebase/auth';
 
-const FormForgotPassword = () =>{
+const FormForgotPassword = () => {
     const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
     const [email, setEmail] = useState<string>('');
-
-    useEffect(() => {
-        console.log('EMAIL: ', email);
-    }, [email]);
 
     const handleForgotPassword = () => {
         auth()
@@ -21,10 +17,10 @@ const FormForgotPassword = () =>{
                 Alert.alert("Ops!", "Algo deu errado ao fazer o seu cadastro");
             })
     };
-    
-    return(
+
+    return (
         <>
-             <View style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/img/myAcademy.png')} style={styles.image} />
                 </View>
@@ -58,8 +54,8 @@ const FormForgotPassword = () =>{
                 </View>
 
             </View>
-        
-        
+
+
         </>
 
     );

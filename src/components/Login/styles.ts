@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
     },
     text: {
         color: 'white',
+        textAlign:'center'
     },
     checkContainer:{
         display:'flex',
@@ -56,12 +57,11 @@ export const styles = StyleSheet.create({
         marginBottom:10
     },
     buttonContainer: {
-        backgroundColor: 'blue',
         alignItems: 'center',
         alignContent:'center',
         justifyContent:'center',
         width: '50%',
-        height:30,
+        height:40,
         borderRadius: 10,
         marginBottom:'10%'
     },
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
         alignContent:'center',
         justifyContent:'center',
         width: '30%',
-        height:30,
+        height:40,
         borderRadius: 10,
     },
     textButton: {
@@ -92,7 +92,9 @@ export const styles = StyleSheet.create({
     },
     textBottoms:{
         textAlign:'center',
-        color:'white'
+        color:'white',
+        textDecorationLine:'underline'
     }
+
 
 });

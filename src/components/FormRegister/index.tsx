@@ -44,13 +44,13 @@ const FormRegister = () => {
 
     };
 
-    const handleSenha = (text:string) =>{
+    const handleSenha = (text: string) => {
         setSenha(text);
-        if(text.length>=6){
+        if (text.length >= 6) {
             //senha valida
             setValidPassword(true);
         }
-        else{
+        else {
             //senha invalida
             setValidPassword(false);
         }
@@ -99,13 +99,10 @@ const FormRegister = () => {
         if (!focusEmail && email.length == 0) {
             return 'blue';
         }
-        if(focusEmail && email.length == 0){
+        if (focusEmail && email.length == 0) {
             return 'red';
         }
         if (focusEmail && validEmail) {
-            return 'blue';
-        }
-        else {
             return 'blue';
         }
     };
@@ -125,10 +122,6 @@ const FormRegister = () => {
         }
     };
 
-    useEffect(()=>{
-        console.log('FOCUS PASSWORD: ', focusPassword);
-    },[focusPassword])
-
     return (
         <>
             <View style={styles.container}>
@@ -140,7 +133,7 @@ const FormRegister = () => {
 
                 <View style={styles.inputContainer}>
                     <TextInput
-                        style={{ borderColor: handleBorderColorEmail(), width: '70%', marginBottom: '5%', borderWidth: 2 }}
+                        style={[{ borderColor: handleBorderColorEmail() }, styles.emailInput]}
                         onChangeText={(text: string) => handleEmail(text)}
                         onFocus={() => setFocusEmail(true)}
                         onBlur={() => setFocusEmail(false)}
@@ -149,7 +142,7 @@ const FormRegister = () => {
                         keyboardType="email-address"
                     />
                     <TextInput
-                        style={{borderColor: handleBorderColorPassword(), width:'70%', marginBottom:'5%', borderWidth:2}}
+                        style={[{ borderColor: handleBorderColorPassword() }, styles.passwordInput]}
                         secureTextEntry={true}
                         onChangeText={(text: string) => handleSenha(text)}
                         onFocus={() => setFocusPassword(true)}
@@ -169,7 +162,7 @@ const FormRegister = () => {
                 </View>
 
                 <View style={styles.enterButton}>
-                    <TouchableOpacity onPress={() => handleNewAccount()} disabled={handleDisabledNewAccount()} style={{ backgroundColor: disabledNewAccount ? 'gray' : 'blue', alignItems: 'center', alignContent: 'center', justifyContent: 'center', width: '50%', height: 30, borderRadius: 10, marginBottom: '10%' }}>
+                    <TouchableOpacity onPress={() => handleNewAccount()} disabled={handleDisabledNewAccount()} style={[{ backgroundColor: disabledNewAccount ? 'gray' : 'blue' }, styles.buttonContainer]}>
                         <Text style={styles.textButton}>Cadastrar</Text>
                     </TouchableOpacity>
                 </View>

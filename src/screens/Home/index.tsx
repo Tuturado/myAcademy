@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, FlatList, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -15,9 +15,30 @@ function Home() {
     auth().signOut();
   };
 
-  const excludeTraining = (id:any) =>{
-    console.log('ID: ', id);
-    setModalVisible(true);
+  const excludeTraining = (id: any) => {
+    
+    //setModalVisible(true);
+
+
+    //Toda essa parte de baixo faz a deleção corretamente, mas só vai de fato deletar se o usuário cliar em sim no modal
+    firestore()
+      .collection('fichaTreino')
+      .doc(id)
+      .delete()
+      .then(() => {
+        Alert.alert("Treino", "Treino Deletado com sucesso!")
+        console.log('documento deletado!');
+        setModalVisible(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert.alert("Ops!", "Parece que houve um problema ao deletar o treino!");
+        setModalVisible(false);
+      });
+  };
+
+  function deleteTraining(){
+
   };
 
   useEffect(() => {
@@ -102,7 +123,7 @@ function Home() {
               <View style={styles.pressedContainer}>
                 <Pressable
                   style={[styles.button, styles.buttonExclude]}
-                  onPress={() => setModalVisible(!modalVisible)}>
+                  onPress={() => deleteTraining()}>
                   <Text style={{ color: 'black' }}>SIM!</Text>
                 </Pressable>
                 <Pressable

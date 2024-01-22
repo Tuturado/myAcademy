@@ -31,31 +31,26 @@ function Home() {
     return () => subscriber();
   }, []);
 
-  useEffect(() => {
-    console.log('TREINOS: ', treinos);
-  }, [treinos])
+  
 
-  type ItemProps = {
-    //id: string
-    diaDaSemana: string
-    nome: string
-    periodo: string
-    peso: string | number
-    repeticoes: string | number
-    series: string | number
-  };
+  function renderList(item:any){
 
-  const Item = ({ diaSemana, nome, periodo, peso, repeticoes, series, status }: TrainingSheet) => (
-    <View style={styles.item} >
-      <Text>Dia da Semana: {diaSemana}</Text>
-      <Text>Nome do Exercício: {nome}</Text>
-      <Text>Período de treino: {periodo}</Text>
-      <Text>Peso: {peso} kg</Text>
-      <Text>Repetições: {repeticoes}</Text>
-      <Text>Series: {series}</Text>
-      <Text>Status: {status}</Text>
-    </View>
-  );
+    const Item = ({ diaSemana, nome, periodo, peso, repeticoes, series, status }: TrainingSheet) => (
+      <View style={styles.item} >
+        <Text>Dia da Semana: {diaSemana}</Text>
+        <Text>Nome do Exercício: {nome}</Text>
+        <Text>Período de treino: {periodo}</Text>
+        <Text>Peso: {peso} kg</Text>
+        <Text>Repetições: {repeticoes}</Text>
+        <Text>Series: {series}</Text>
+        <Text>Status: {status}</Text>
+      </View>
+    );
+
+    return(
+      <Item diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} />
+    ) 
+  }
 
 
   return (
@@ -67,10 +62,11 @@ function Home() {
               <Text style={styles.text}>Sair</Text>
             </TouchableOpacity>
           </View>
+          
           {treinos.length != 0 ? <FlatList
             data={treinos}
-            renderItem={({ item }) => <Item diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} />}
-            keyExtractor={item => item.id}
+            renderItem={({ item }) => renderList(item)}
+            keyExtractor={item => item?.id}
           /> : <Text>Ainda não existem treinos cadastrados, clique no botão para adicionar!</Text>}
 
           <View style={styles.plusButtonContainer}>

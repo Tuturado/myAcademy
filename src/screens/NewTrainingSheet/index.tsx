@@ -10,6 +10,8 @@ import { TrainingSheet } from '../TrainingSheet';
 function NewTrainingSheet() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
 
+  const [disabledCadastrar, setDisabledCadastrar] = useState<boolean>(true);
+
   const exercicio: TrainingSheet = {
     nome: '',
     series: '',
@@ -45,8 +47,25 @@ function NewTrainingSheet() {
   };
 
   useEffect(() => {
-    console.log('FICHA DE TREINO', fichaTreino);
+      let lengDiaSemana = fichaTreino.diaSemana.length;
+      let lengNome = fichaTreino.nome.length;
+      let lengPeriodo = fichaTreino.periodo.length;
+
+      if(lengDiaSemana == 0 || lengNome == 0 || lengPeriodo == 0 || fichaTreino.peso == '' || fichaTreino.repeticoes == '' || fichaTreino.series == ''){
+        setDisabledCadastrar(true);
+      }else{
+        setDisabledCadastrar(false);
+      }
+
+      console.log('FICHA TREINO: ', fichaTreino);
   }, [fichaTreino]);
+
+
+  const clearForm = (exercicio:TrainingSheet) =>{
+    exercicio.diaSemana = '';
+    exercicio.periodo = '';
+    setFichaTreino(exercicio);
+  };
 
   function handleNewTraining (){
     firestore()
@@ -58,7 +77,7 @@ function NewTrainingSheet() {
     .then(()=> {
       Alert.alert("Treino", "Treino Criado com sucesso!")
       //limpar os estados dos inputs
-      setFichaTreino(exercicio);
+      clearForm(exercicio);
     })
     .catch((error)=>{
       console.error(error);
@@ -132,13 +151,13 @@ function NewTrainingSheet() {
 
         <View style={styles.bottomButtonsContainer}>
           <View style={styles.registerButtonContainer}>
-            <TouchableOpacity onPress={() => handleNewTraining()} style={styles.registerButton}>
+            <TouchableOpacity onPress={() => handleNewTraining()} disabled={disabledCadastrar ? true : false} style={[{backgroundColor: disabledCadastrar ? 'gray' : 'blue'} ,styles.registerButton]}>
               <Text style={styles.text}>Cadastrar Treino</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.registerButtonContainer}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.registerButton}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.returnButton}>
               <Text style={styles.text}>Voltar</Text>
             </TouchableOpacity>
           </View>

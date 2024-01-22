@@ -50,7 +50,14 @@ export const styles = StyleSheet.create({
         alignItems:'center'
     },
     registerButton:{
-        backgroundColor: 'blue',
+        alignItems: 'center',
+        alignContent:'center',
+        justifyContent:'center',
+        width: '40%',
+        height:40,
+    },
+    returnButton:{
+        backgroundColor:'blue',
         alignItems: 'center',
         alignContent:'center',
         justifyContent:'center',

@@ -20,7 +20,9 @@ export const styles = StyleSheet.create({
     },
     exitButtonContainer: {
         padding: 10,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        marginTop:'6%',
+        marginBottom:'5%'
     },
     exitButton: {
         backgroundColor: 'blue',
@@ -29,6 +31,11 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '30%',
         height: 30,
+    },
+    filterInput:{
+        width: '70%',
+        borderWidth: 2,
+        borderColor: 'blue',
     },
     topButtonsContainer: {
         flexDirection: 'row',
@@ -46,6 +53,14 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
+        height: 30,
+    },
+    updateStatusTraining: {
+        //backgroundColor: 'green',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+        width:'100%',
         height: 30,
     },
     modalView: {
@@ -91,6 +106,7 @@ export const styles = StyleSheet.create({
     },
     plusButtonContainer: {
         paddingRight: 20,
+        marginBottom:'10%',
         alignItems: 'flex-end',
         borderColor: 'red',
         border: 5

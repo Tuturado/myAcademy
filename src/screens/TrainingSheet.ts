@@ -1,5 +1,5 @@
 export type TrainingSheet = {
-    //id: string,
+    id: string,
     nome: string,
     series: number | string,
     repeticoes: number | string,

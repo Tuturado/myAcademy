@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, FlatList, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -8,15 +8,17 @@ import { TrainingSheet } from '../TrainingSheet';
 
 function Home() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
-  const [treinos, setTreinos] = useState<any>([]);
+  const [treinos, setTreinos] = useState<TrainingSheet[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>('');
+  const [list, setList] = useState(treinos);
 
   const handleSignOut = () => {
     auth().signOut();
   };
 
-  const excludeTraining = (id: any) => {
-    
+  const excludeTraining = (id: string) => {
+
     //setModalVisible(true);
 
 
@@ -37,7 +39,25 @@ function Home() {
       });
   };
 
-  function deleteTraining(){
+
+  const updateStatusTraining = (id: string) => {
+    firestore()
+      .collection('fichaTreino')
+      .doc(id)
+      .update({
+        'fichaTreino.status': 'Concluído',
+      })
+      .then(() => {
+        Alert.alert("Status", "O treino foi marcado como concluído!");
+        console.log('Status Atualizado');
+      })
+      .catch((error)=>{
+        console.error(error);
+        Alert.alert("Ops!", "Parece que houve um problema ao marcar o treino como concluído!");
+      });
+  };
+
+  function deleteTraining() {
 
   };
 
@@ -50,16 +70,80 @@ function Home() {
             id: doc.id,
             ...doc.data()
           }
-        })
+        }) as TrainingSheet[];
+        //console.log('DATA: ', data);
         setTreinos(data);
       });
 
     return () => subscriber();
   }, []);
 
-  useEffect(() => {
-    console.log('MODAL VISIBLE: ', modalVisible);
-  }, [modalVisible])
+  // useEffect(() => {
+  //   console.log('Treinos: ', treinos.fichaTreino);
+  //   if(filter === ""){
+  //     setList(treinos);
+  //   }
+  //   else{
+  //     setList(
+  //       treinos?.fichaTreino?.filter((item:TrainingSheet)=>{
+  //         if(item.diaSemana.indexOf(filter) > -1){
+  //           return true;
+  //         }
+  //         else{
+  //           return false;
+  //         }
+  //       })
+  //     );
+  //   }
+  // }, [filter]);
+
+  // useEffect(()=>{
+  //   console.log('LISTA: ', list);
+  // },[list]);
+
+  useEffect(()=>{
+    let treinosSegunda:any = [];
+    let treinosTerca: any = [];
+    let treinosQuarta: any = [];
+    let treinosQuinta: any = [];
+    let treinosSexta: any = [];
+    let treinosSabado: any = [];
+    let treinosDomingo: any = [];
+
+    treinos.map((treino: TrainingSheet)=>{
+      console.log('TREINOS> ', treino?.fichaTreino);
+      if(treino?.fichaTreino.diaSemana == "Segunda"){
+        treinosSegunda.push(treino?.fichaTreino);
+      }
+      if(treino?.fichaTreino.diaSemana == "Terça"){
+        treinosTerca.push(treino?.fichaTreino);
+      }
+      if(treino?.fichaTreino.diaSemana == "Quarta"){
+        treinosQuarta.push(treino?.fichaTreino);
+      }
+      if(treino?.fichaTreino.diaSemana == "Quinta"){
+        treinosQuinta.push(treino?.fichaTreino);
+      }
+      if(treino?.fichaTreino.diaSemana == "Sexata"){
+        treinosSexta.push(treino?.fichaTreino);
+      }
+      if(treino?.fichaTreino.diaSemana == "Sábado"){
+        treinosSabado.push(treino?.fichaTreino);
+      }
+      if(treino?.fichaTreino.diaSemana == "Domingo"){
+        treinosDomingo.push(treino?.fichaTreino);
+      }
+      
+    });
+    //console.log('TREINOS SEGUNDA: ', treinosSegunda);
+    //console.log('TREINOS TERÇA: ', treinosTerca);
+    //console.log('TREINOS QUARTA: ', treinosQuarta);
+    //console.log('TREINOS QUINTA: ', treinosQuinta);
+    //console.log('TREINOS SEXTA: ', treinosSexta);
+    //console.log('TREINOS SABADO: ', treinosSabado);
+    //console.log('TREINOS DOMINGO: ', treinosDomingo);
+   
+  },[treinos]);
 
 
   function renderList(item: any) {
@@ -91,11 +175,18 @@ function Home() {
         <Text>Repetições: {repeticoes}</Text>
         <Text>Series: {series}</Text>
         <Text>Status: {status}</Text>
+
+
+         <View style={styles.exitButtonContainer}>
+            <TouchableOpacity onPress={() => updateStatusTraining(item?.id)} disabled={status == 'Concluído' ? true : false} style={[{backgroundColor: status == "Concluído" ? 'gray' : 'green'}, styles.updateStatusTraining]}>
+              <Text style={styles.text}>Concluir Treino</Text>
+            </TouchableOpacity>
+          </View>
       </View>
     );
 
     return (
-      <Item diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} />
+      <Item id={item?.id} diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} />
     )
   }
 
@@ -110,7 +201,7 @@ function Home() {
           </TouchableOpacity>
         </View>
 
-        <Modal
+        {/* <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -136,12 +227,23 @@ function Home() {
 
             </View>
           </View>
-        </Modal>
+        </Modal> */}
+
+        <TextInput
+          style={styles.filterInput}
+          onChangeText={setFilter}
+          value={filter}
+          placeholder="Pesquisar Treino"
+          keyboardType="default"
+        />
+
+        <Text style={styles.text}>Todos os treinos cadastrados:</Text>
 
         {treinos.length != 0 ? <FlatList
           data={treinos}
           renderItem={({ item }) => renderList(item)}
           keyExtractor={item => item?.id}
+          style={{borderColor:'black', borderWidth:5, margin:5}}
         /> : <Text>Ainda não existem treinos cadastrados, clique no botão para adicionar!</Text>}
 
         <View style={styles.plusButtonContainer}>

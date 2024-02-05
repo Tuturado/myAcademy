@@ -105,11 +105,11 @@ export const styles = StyleSheet.create({
         backgroundColor: 'yellow',
     },
     plusButtonContainer: {
-        paddingRight: 20,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        padding:10,
         marginBottom:'10%',
         alignItems: 'flex-end',
-        borderColor: 'red',
-        border: 5
     },
     plusButtom: {
         backgroundColor: 'blue',
@@ -118,6 +118,13 @@ export const styles = StyleSheet.create({
         width: '15%',
         height: 60,
         borderRadius: 100,
+    },
+    resetAllTrainingButton:{
+        backgroundColor: 'blue',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '40%', 
+        height: 40
     },
     item: {
         backgroundColor: 'blue',

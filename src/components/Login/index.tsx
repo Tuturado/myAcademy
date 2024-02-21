@@ -100,7 +100,7 @@ const FormLogin = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.textBottomContainer}>
-                    <Text style={styles.textBottoms}>O que há de novo?</Text>
+                    <Text style={styles.textBottoms} onPress={()=>navigation.navigate('whyIsNew')}>O que há de novo?</Text>
                     <Text style={styles.text}>Versão 1.0</Text>
                 </View>
 

@@ -47,6 +47,7 @@ export const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         height: 30,
+        borderRadius:10
     },
     updateTrainingButton: {
         backgroundColor: 'green',
@@ -54,9 +55,9 @@ export const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         height: 30,
+        borderRadius:10
     },
     updateStatusTraining: {
-        //backgroundColor: 'green',
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',

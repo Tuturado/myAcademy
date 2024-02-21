@@ -20,7 +20,9 @@ export const styles = StyleSheet.create({
     },
     exitButtonContainer: {
         padding: 10,
+        flexDirection:'row',
         alignItems: 'flex-end',
+        justifyContent:'space-between',
         marginTop:'6%',
         marginBottom:'5%'
     },
@@ -48,6 +50,13 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 30,
         borderRadius:10
+    },
+    excludeAllTrainingButton: {
+        backgroundColor: 'red',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+        height: 30,
     },
     updateTrainingButton: {
         backgroundColor: 'green',

@@ -69,11 +69,16 @@ function Home() {
   };
 
 
-  async function massUpdateTrainingStatus() {
-    // Get all users
-    const usersQuerySnapshot = await firestore().collection('fichaTreino').get();
+  async function excludeTrainingSheet() {
+    const TrainingSheetQuerySnapshot = await firestore().collection('fichaTreino').get();
+    TrainingSheetQuerySnapshot.forEach(document => {
+      document.ref.delete();
+    });
+  };
 
-    // Create a new batch instance
+
+  async function massUpdateTrainingStatus() {
+    const usersQuerySnapshot = await firestore().collection('fichaTreino').get();
     const batch = firestore().batch();
 
     usersQuerySnapshot.forEach(documentSnapshot => {
@@ -84,10 +89,6 @@ function Home() {
     return batch.commit();
   }
 
-
-  function deleteTraining() {
-
-  };
 
   useEffect(() => {
     const subscriber = firestore()
@@ -171,14 +172,6 @@ function Home() {
     setTreinosSexta(treinosSexta);
     setTreinosSabado(treinosSabado);
     setTreinosDomingo(treinosDomingo);
-    //console.log('TREINOS SEGUNDA: ', treinosSegunda);
-    //console.log('TREINOS TERÇA: ', treinosTerca);
-    //console.log('TREINOS QUARTA: ', treinosQuarta);
-    //console.log('TREINOS QUINTA: ', treinosQuinta);
-    //console.log('TREINOS SEXTA: ', treinosSexta);
-    //console.log('TREINOS SABADO: ', treinosSabado);
-    //console.log('TREINOS DOMINGO: ', treinosDomingo);
-
   }, [treinos]);
 
 
@@ -203,7 +196,7 @@ function Home() {
           </View>
 
         </View>
-       
+
         <Text>Dia da Semana: {diaSemana}</Text>
         <Text>Nome do Exercício: {nome}</Text>
         <Text>Período de treino: {periodo}</Text>
@@ -238,52 +231,66 @@ function Home() {
     { key: '8', value: 'Domingo' },
   ]
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log('DIA DA SEMANA: ', diaSemana);
-  },[diaSemana]);
+  }, [diaSemana]);
 
-const selectedFilter = () =>{
-  switch(diaSemana){
-    case 'Todos':
-      return treinos;
+  const selectedFilter = () => {
+    switch (diaSemana) {
+      case 'Todos':
+        return treinos;
 
-    case 'Segunda':
-      return treinosSegunda;
-      break;
-    
-    case 'Terça':
-      return treinosTerca;
-      break;
-    
-    case 'Quarta':
-      return treinosQuarta;
+      case 'Segunda':
+        return treinosSegunda;
+        break;
 
-    case 'Quinta':
-      return treinosQuinta;
+      case 'Terça':
+        return treinosTerca;
+        break;
 
-    case 'Sexta':
-      return treinosSexta;
+      case 'Quarta':
+        return treinosQuarta;
 
-    case 'Sábado': 
-    return treinosSabado;
+      case 'Quinta':
+        return treinosQuinta;
 
-    case 'Domingo':
-      return treinosDomingo;
+      case 'Sexta':
+        return treinosSexta;
 
-    default:
-      return treinos;
+      case 'Sábado':
+        return treinosSabado;
 
-  }
-};
+      case 'Domingo':
+        return treinosDomingo;
+
+      default:
+        return treinos;
+
+    }
+  };
 
   return (
     <>
 
       <View style={styles.container}>
         <View style={styles.exitButtonContainer}>
+
+          <TouchableOpacity onPress={() => massUpdateTrainingStatus().then(() => {
+            Alert.alert("Status", "Todos os treinos foram marcados como pendente novamente!");
+            console.log('Status Atualizado');
+          })
+            .catch((error) => {
+              console.error(error);
+              Alert.alert("Ops!", "Parece que houve um problema ao marcar os treinos como pendentes!");
+            })} style={styles.resetAllTrainingButton}>
+            <Text style={styles.text}>Resetar treinos</Text>
+          </TouchableOpacity>
+
+
           <TouchableOpacity onPress={() => handleSignOut()} style={styles.exitButton}>
             <Text style={styles.text}>Sair</Text>
           </TouchableOpacity>
+
         </View>
 
         {/* <Modal
@@ -317,12 +324,12 @@ const selectedFilter = () =>{
         <Text style={styles.text}>Mostrar treinos de:</Text>
 
         <SelectList
-            placeholder='Dia da Semana'
-            boxStyles={{ borderRadius: 0, borderColor: 'blue', }}
-            setSelected={(val: string) => setDiaSemana(val)}
-            data={dias}
-            save="value"
-          />
+          placeholder='Dia da Semana'
+          boxStyles={{ borderRadius: 0, borderColor: 'blue', }}
+          setSelected={(val: string) => setDiaSemana(val)}
+          data={dias}
+          save="value"
+        />
 
         <Text style={styles.text}>Treinos:</Text>
 
@@ -331,18 +338,18 @@ const selectedFilter = () =>{
           renderItem={({ item }) => renderList(item)}
           keyExtractor={item => item?.id}
           style={{ borderColor: 'black', borderWidth: 5, margin: 5 }}
-        /> : <Text>Ainda não existem treinos cadastrados, clique no botão para adicionar!</Text>}
+        /> : <Text>Ainda não existem treinos cadastrados, clique no botão "+" para adicionar!</Text>}
 
         <View style={styles.plusButtonContainer}>
-          <TouchableOpacity onPress={() => massUpdateTrainingStatus().then(() => {
-            Alert.alert("Status", "Todos os treinos foram marcados como pendente novamente!");
-            console.log('Status Atualizado');
+          <TouchableOpacity onPress={() => excludeTrainingSheet().then(() => {
+            Alert.alert("Status", "A ficha de treino foi deletada por completo!");
+            console.log('Ficha de treino deletada');
           })
             .catch((error) => {
               console.error(error);
-              Alert.alert("Ops!", "Parece que houve um problema ao marcar os treinos como pendentes!");
-            })} style={styles.resetAllTrainingButton}>
-            <Text style={styles.text}>Resetar treinos</Text>
+              Alert.alert("Ops!", "Parece que houve um problema ao deletar a ficha de treino!");
+            })} style={styles.excludeAllTrainingButton}>
+            <Text style={styles.text}>Excluir ficha de treino</Text>
           </TouchableOpacity>
 
 
@@ -351,7 +358,7 @@ const selectedFilter = () =>{
           </TouchableOpacity>
         </View>
 
-      </View>
+      </View >
 
     </>
   );

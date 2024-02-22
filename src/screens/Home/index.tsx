@@ -7,11 +7,11 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { TrainingSheet } from '../TrainingSheet';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { SelectList } from 'react-native-dropdown-select-list';
+import ModalComponent from '../../components/Modal';
 
 function Home() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
   const [treinos, setTreinos] = useState<TrainingSheet[]>([]);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>('');
   const [list, setList] = useState(treinos);
   const [diaSemana, setDiaSemana] = useState<string>('');
@@ -30,9 +30,6 @@ function Home() {
 
   const excludeTraining = (id: string) => {
 
-    //setModalVisible(true);
-
-
     //Toda essa parte de baixo faz a deleção corretamente, mas só vai de fato deletar se o usuário cliar em sim no modal
     firestore()
       .collection('fichaTreino')
@@ -41,12 +38,10 @@ function Home() {
       .then(() => {
         Alert.alert("Treino", "Treino Deletado com sucesso!")
         console.log('documento deletado!');
-        setModalVisible(false);
       })
       .catch((error) => {
         console.error(error);
         Alert.alert("Ops!", "Parece que houve um problema ao deletar o treino!");
-        setModalVisible(false);
       });
   };
 
@@ -184,7 +179,7 @@ function Home() {
 
 
           <View style={styles.exitButtonContainer}>
-            <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.updateTrainingButton}>
+            <TouchableOpacity onPress={() => navigation.navigate('updateTraining', {item})} style={styles.updateTrainingButton}>
               <Text style={styles.text}>Atualizar Treino</Text>
             </TouchableOpacity>
           </View>
@@ -197,13 +192,13 @@ function Home() {
 
         </View>
 
-        <Text>Dia da Semana: {diaSemana}</Text>
-        <Text>Nome do Exercício: {nome}</Text>
-        <Text>Período de treino: {periodo}</Text>
-        <Text>Peso: {peso} kg</Text>
-        <Text>Repetições: {repeticoes}</Text>
-        <Text>Series: {series}</Text>
-        <Text>Status: {status}</Text>
+        <Text style={styles.text}>Dia da Semana: {diaSemana}</Text>
+        <Text style={styles.text}>Nome do Exercício: {nome}</Text>
+        <Text style={styles.text}>Período de treino: {periodo}</Text>
+        <Text style={styles.text}>Peso: {peso} kg</Text>
+        <Text style={styles.text}>Repetições: {repeticoes}</Text>
+        <Text style={styles.text}>Series: {series}</Text>
+        <Text style={styles.text}>Status: {status}</Text>
 
 
         <View style={styles.exitButtonContainer}>
@@ -293,34 +288,6 @@ function Home() {
 
         </View>
 
-        {/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.text}>Tem Certeza que deseja excluir esse treino?</Text>
-              <View style={styles.pressedContainer}>
-                <Pressable
-                  style={[styles.button, styles.buttonExclude]}
-                  onPress={() => deleteTraining()}>
-                  <Text style={{ color: 'black' }}>SIM!</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={{ color: 'white' }}>NÃO!</Text>
-                </Pressable>
-              </View>
-
-
-            </View>
-          </View>
-        </Modal> */}
-
         <Text style={styles.text}>Mostrar treinos de:</Text>
 
         <SelectList
@@ -338,20 +305,20 @@ function Home() {
           renderItem={({ item }) => renderList(item)}
           keyExtractor={item => item?.id}
           style={{ borderColor: 'black', borderWidth: 5, margin: 5 }}
-        /> : <Text>Ainda não existem treinos cadastrados, clique no botão "+" para adicionar!</Text>}
+        /> : <Text style={styles.text}>Ainda não existem treinos cadastrados, clique no botão "+" para adicionar!</Text>}
 
         <View style={styles.plusButtonContainer}>
-          <TouchableOpacity onPress={() => excludeTrainingSheet().then(() => {
+          <TouchableOpacity disabled={treinos.length == 0 ? true : false} onPress={() => excludeTrainingSheet().then(() => {
             Alert.alert("Status", "A ficha de treino foi deletada por completo!");
             console.log('Ficha de treino deletada');
           })
             .catch((error) => {
               console.error(error);
               Alert.alert("Ops!", "Parece que houve um problema ao deletar a ficha de treino!");
-            })} style={styles.excludeAllTrainingButton}>
+            })} style={[{backgroundColor: treinos.length == 0 ? 'gray': 'red'} ,styles.excludeAllTrainingButton]}>
             <Text style={styles.text}>Excluir ficha de treino</Text>
           </TouchableOpacity>
-
+            <ModalComponent visible = {false}></ModalComponent>
 
           <TouchableOpacity onPress={() => navigation.navigate('newTrainingSheet')} style={styles.plusButtom}>
             <Text style={styles.textButton}>+</Text>

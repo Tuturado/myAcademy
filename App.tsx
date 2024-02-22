@@ -7,6 +7,7 @@ import Register from './src/screens/Register';
 import ForgotPassword from './src/screens/ForgotPassword';
 import NewTrainingSheet from './src/screens/NewTrainingSheet';
 import WhyIsNew from './src/screens/WhyIsNew';
+import UpdateTraining from './src/screens/UpdateTraining';
 
 
 
@@ -26,6 +27,7 @@ function App(): JSX.Element {
         <Stack.Screen name="forgotPassword" component={ForgotPassword} options={{title:'ForgotPassword'}}/>
         <Stack.Screen name="home" component={Home} options={{title:'Home'}}/>
         <Stack.Screen name="newTrainingSheet" component={NewTrainingSheet} options={{title:'NewTrainingSheet'}}/>
+        <Stack.Screen name="updateTraining" component={UpdateTraining} options={{title: 'UpdateTraining'}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

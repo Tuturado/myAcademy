@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
         borderRadius:10
     },
     excludeAllTrainingButton: {
+        backgroundColor: 'red',
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',

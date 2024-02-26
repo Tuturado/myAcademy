@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, FlatList, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { TrainingSheet } from '../TrainingSheet';
@@ -22,9 +22,11 @@ function Home() {
   const [treinosSexta, setTreinosSexta] = useState<TrainingSheet[]>([]);
   const [treinosSabado, setTreinosSabado] = useState<TrainingSheet[]>([]);
   const [treinosDomingo, setTreinosDomingo] = useState<TrainingSheet[]>([]);
+  let user = firebase.auth().currentUser;
 
 
   const handleSignOut = () => {
+    user = null;
     auth().signOut();
   };
 
@@ -32,7 +34,7 @@ function Home() {
 
     //Toda essa parte de baixo faz a deleção corretamente, mas só vai de fato deletar se o usuário cliar em sim no modal
     firestore()
-      .collection('fichaTreino')
+      .collection(`fichaTreino${user?.uid}`)
       .doc(id)
       .delete()
       .then(() => {
@@ -45,10 +47,14 @@ function Home() {
       });
   };
 
+  useEffect(()=>{
+    console.log('USUARIO UUID: ', user?.uid);
+  },[user])
+
 
   const updateStatusTraining = (id: string) => {
     firestore()
-      .collection('fichaTreino')
+      .collection(`fichaTreino${user?.uid}`)
       .doc(id)
       .update({
         'fichaTreino.status': 'Concluído',
@@ -65,7 +71,7 @@ function Home() {
 
 
   async function excludeTrainingSheet() {
-    const TrainingSheetQuerySnapshot = await firestore().collection('fichaTreino').get();
+    const TrainingSheetQuerySnapshot = await firestore().collection(`fichaTreino${user?.uid}`).get();
     TrainingSheetQuerySnapshot.forEach(document => {
       document.ref.delete();
     });
@@ -73,7 +79,7 @@ function Home() {
 
 
   async function massUpdateTrainingStatus() {
-    const usersQuerySnapshot = await firestore().collection('fichaTreino').get();
+    const usersQuerySnapshot = await firestore().collection(`fichaTreino${user?.uid}`).get();
     const batch = firestore().batch();
 
     usersQuerySnapshot.forEach(documentSnapshot => {
@@ -87,7 +93,7 @@ function Home() {
 
   useEffect(() => {
     const subscriber = firestore()
-      .collection('fichaTreino')
+      .collection(`fichaTreino${user?.uid}`)
       .onSnapshot(querySnapshot => {
         const data = querySnapshot.docs.map(doc => {
           return {
@@ -172,11 +178,12 @@ function Home() {
 
 
   function renderList(item: any) {
-    const Item = ({ diaSemana, nome, periodo, peso, repeticoes, series, status }: TrainingSheet) => (
+    console.log('ITEM: ', item);
+    const Item = ({ diaSemana, nome, periodo, peso, repeticoes, series, status, observacoes }: TrainingSheet) => (
       <View style={styles.item} >
         <View style={styles.topButtonsContainer}>
 
-
+        
 
           <View style={styles.exitButtonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('updateTraining', {item})} style={styles.updateTrainingButton}>
@@ -199,6 +206,7 @@ function Home() {
         <Text style={styles.text}>Repetições: {repeticoes}</Text>
         <Text style={styles.text}>Series: {series}</Text>
         <Text style={styles.text}>Status: {status}</Text>
+        <Text style={styles.text}>Observações: {observacoes}</Text>
 
 
         <View style={styles.exitButtonContainer}>
@@ -210,7 +218,7 @@ function Home() {
     );
 
     return (
-      <Item id={item?.id} diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} />
+      <Item id={item?.id} diaSemana={item?.fichaTreino?.diaSemana} nome={item?.fichaTreino?.nome} periodo={item?.fichaTreino?.periodo} peso={item?.fichaTreino?.peso} repeticoes={item?.fichaTreino?.repeticoes} series={item?.fichaTreino?.series} status={item?.fichaTreino?.status} observacoes={item?.fichaTreino?.observacoes} />
     )
   }
 
@@ -304,7 +312,7 @@ function Home() {
           data={selectedFilter()}
           renderItem={({ item }) => renderList(item)}
           keyExtractor={item => item?.id}
-          style={{ borderColor: 'black', borderWidth: 5, margin: 5 }}
+          style={{ borderColor: 'blue', borderWidth: 5, margin: 5, padding:5 }}
         /> : <Text style={styles.text}>Ainda não existem treinos cadastrados, clique no botão "+" para adicionar!</Text>}
 
         <View style={styles.plusButtonContainer}>
@@ -318,7 +326,7 @@ function Home() {
             })} style={[{backgroundColor: treinos.length == 0 ? 'gray': 'red'} ,styles.excludeAllTrainingButton]}>
             <Text style={styles.text}>Excluir ficha de treino</Text>
           </TouchableOpacity>
-            <ModalComponent visible = {false}></ModalComponent>
+            {/* <ModalComponent visible = {false}></ModalComponent> */}
 
           <TouchableOpacity onPress={() => navigation.navigate('newTrainingSheet')} style={styles.plusButtom}>
             <Text style={styles.textButton}>+</Text>

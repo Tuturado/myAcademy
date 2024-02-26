@@ -44,6 +44,13 @@ export const styles = StyleSheet.create({
         borderWidth:2,
         borderColor:'blue'
     },
+    observacoes: {
+        width: '90%',
+        height:100,
+        margin:5,
+        borderWidth:2,
+        borderColor:'blue'
+    },
     registerButtonContainer:{
         padding:20,
         width:'100%',

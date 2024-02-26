@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { TrainingSheet } from '../TrainingSheet';
 
 function NewTrainingSheet() {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
+  const user = firebase.auth().currentUser;
 
   const [disabledCadastrar, setDisabledCadastrar] = useState<boolean>(true);
 
@@ -19,7 +20,8 @@ function NewTrainingSheet() {
     peso: '',
     diaSemana: '',
     periodo: '',
-    status:'Pendente'
+    status:'Pendente',
+    observacoes: ''
   }
 
   const [fichaTreino, setFichaTreino] = useState(exercicio);
@@ -69,7 +71,7 @@ function NewTrainingSheet() {
 
   function handleNewTraining (){
     firestore()
-    .collection('fichaTreino')
+    .collection(`fichaTreino${user?.uid}`)
     .add({
       fichaTreino,
       created_at: firestore.FieldValue.serverTimestamp()
@@ -84,7 +86,6 @@ function NewTrainingSheet() {
       Alert.alert("Ops!", "Parece que houve um problema ao cadastrar o treino!");
     })
   };
-
 
   return (
     <>
@@ -148,6 +149,15 @@ function NewTrainingSheet() {
             save="value"
           />
         </View>
+
+        <TextInput
+            style={styles.observacoes}
+            onChangeText={text => handleOnchange(text, 'observacoes')}
+            value={fichaTreino.observacoes}
+            multiline={true}
+            placeholder="Obervações"
+            keyboardType="default"
+          />
 
         <View style={styles.bottomButtonsContainer}>
           <View style={styles.registerButtonContainer}>

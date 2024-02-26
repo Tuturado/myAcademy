@@ -6,6 +6,7 @@ export type TrainingSheet = {
     peso: number | string,
     diaSemana: string,
     periodo: string,
-    status: string
+    status: string,
+    observacoes: string
 };
 

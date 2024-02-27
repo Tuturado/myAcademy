@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
     },
     topButtonsContainer: {
         flexDirection: 'row',
+        marginRight:50,
         justifyContent: 'space-between'
     },
     excludeTrainingButton: {
@@ -142,7 +143,8 @@ export const styles = StyleSheet.create({
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
-        marginTop:20,     
+        marginTop:20, 
+        borderRadius:10    
     },
     textButton: {
         color: 'white',

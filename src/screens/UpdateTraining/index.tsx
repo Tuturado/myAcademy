@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { NavigationProp, useNavigation, Route, useRoute } from '@react-navigation/native';
@@ -11,6 +11,7 @@ function UpdateTraining () {
   const navigation: NavigationProp<ReactNavigation.RootParamList> = useNavigation();
   const route = useRoute();
   const { item } = route.params;
+  const user = firebase.auth().currentUser;
 
   const [disabledCadastrar, setDisabledCadastrar] = useState<boolean>(true);
 
@@ -21,7 +22,8 @@ function UpdateTraining () {
     peso: item?.fichaTreino?.peso,
     diaSemana: item?.fichaTreino?.diaSemana,
     periodo: item?.fichaTreino?.periodo,
-    status: item.fichaTreino.status
+    status: item?.fichaTreino?.status,
+    observacoes: item?.fichaTreino?.observacoes
   }
 
   const [fichaTreino, setFichaTreino] = useState(exercicio);
@@ -43,6 +45,11 @@ function UpdateTraining () {
     { key: '3', value: 'Noite' }
   ]
 
+  const status = [
+    { key: '1', value: 'Concluído' },
+    { key: '2', value: 'Pendente' },
+  ]
+
 
   const handleOnchange = (text: string | number, input: string | number) => {
     setFichaTreino(prevState => ({ ...prevState, [input]: text }));
@@ -59,8 +66,6 @@ function UpdateTraining () {
       }else{
         setDisabledCadastrar(false);
       }
-
-      console.log('FICHA TREINO: ', fichaTreino);
   }, [fichaTreino]);
 
 
@@ -72,7 +77,7 @@ function UpdateTraining () {
 
   function handleUpdateTraining (){
     firestore()
-    .collection('fichaTreino')
+    .collection(`fichaTreino${user?.uid}`)
     .doc(item.id)
     .update({
         'fichaTreino.nome': fichaTreino.nome,
@@ -82,9 +87,11 @@ function UpdateTraining () {
         'fichaTreino.repeticoes': fichaTreino.repeticoes,
         'fichaTreino.series': fichaTreino.series,
         'fichaTreino.status': fichaTreino.status,
+        'fichaTreino.observacoes': fichaTreino.observacoes
     })
     .then(()=> {
-      Alert.alert("Treino", "Treino atualizado com sucesso!")
+      Alert.alert("Treino", "Treino atualizado com sucesso!");
+      navigation.navigate('home');
       //limpar os estados dos inputs
       //clearForm(exercicio);
     })
@@ -112,7 +119,7 @@ function UpdateTraining () {
           <TextInput
             style={styles.nomeExercicio}
             onChangeText={text => handleOnchange(text, 'series')}
-            value={fichaTreino.series}
+            value={fichaTreino.series.toString()}
             maxLength={3}
             placeholder="Series"
             keyboardType="numeric"
@@ -157,6 +164,27 @@ function UpdateTraining () {
             save="value"
           />
         </View>
+
+        <View style={styles.selectBoxContainer}>
+          <SelectList
+            placeholder='Status'
+            boxStyles={{ borderRadius: 0, borderColor: 'blue', }}
+            setSelected={(val: string) => handleOnchange(val, 'status')}
+            data={status}
+            save="value"
+          />
+        </View>
+
+        <TextInput
+            style={styles.observacoes}
+            onChangeText={text => handleOnchange(text, 'observacoes')}
+            value={fichaTreino.observacoes}
+            multiline={true}
+            placeholder="Observações"
+            keyboardType="default"
+          />
+
+        
 
         <View style={styles.bottomButtonsContainer}>
           <View style={styles.registerButtonContainer}>

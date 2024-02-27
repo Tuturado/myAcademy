@@ -58,8 +58,6 @@ function NewTrainingSheet() {
       }else{
         setDisabledCadastrar(false);
       }
-
-      console.log('FICHA TREINO: ', fichaTreino);
   }, [fichaTreino]);
 
 

@@ -47,11 +47,6 @@ function Home() {
       });
   };
 
-  useEffect(()=>{
-    console.log('USUARIO UUID: ', user?.uid);
-  },[user])
-
-
   const updateStatusTraining = (id: string) => {
     firestore()
       .collection(`fichaTreino${user?.uid}`)
@@ -101,7 +96,6 @@ function Home() {
             ...doc.data()
           }
         }) as TrainingSheet[];
-        //console.log('DATA: ', data);
         setTreinos(data);
       });
 
@@ -128,7 +122,6 @@ function Home() {
   // }, [filter]);
 
   // useEffect(()=>{
-  //   console.log('LISTA: ', list);
   // },[list]);
 
   useEffect(() => {
@@ -141,7 +134,6 @@ function Home() {
     let treinosDomingo: any = [];
 
     treinos.map((treino: TrainingSheet) => {
-      //console.log('TREINOS> ', treino?.fichaTreino);
       if (treino?.fichaTreino.diaSemana == "Segunda") {
         treinosSegunda.push(treino);
       }
@@ -178,12 +170,9 @@ function Home() {
 
 
   function renderList(item: any) {
-    console.log('ITEM: ', item);
     const Item = ({ diaSemana, nome, periodo, peso, repeticoes, series, status, observacoes }: TrainingSheet) => (
       <View style={styles.item} >
         <View style={styles.topButtonsContainer}>
-
-        
 
           <View style={styles.exitButtonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('updateTraining', {item})} style={styles.updateTrainingButton}>
@@ -233,10 +222,6 @@ function Home() {
     { key: '7', value: 'Sábado' },
     { key: '8', value: 'Domingo' },
   ]
-
-  useEffect(() => {
-    console.log('DIA DA SEMANA: ', diaSemana);
-  }, [diaSemana]);
 
   const selectedFilter = () => {
     switch (diaSemana) {
@@ -306,13 +291,11 @@ function Home() {
           save="value"
         />
 
-        <Text style={styles.text}>Treinos:</Text>
-
         {treinos.length != 0 ? <FlatList
           data={selectedFilter()}
           renderItem={({ item }) => renderList(item)}
           keyExtractor={item => item?.id}
-          style={{ borderColor: 'blue', borderWidth: 5, margin: 5, padding:5 }}
+          style={{ borderColor: 'blue', borderWidth: 5, margin: 5, padding:5, marginTop:20 }}
         /> : <Text style={styles.text}>Ainda não existem treinos cadastrados, clique no botão "+" para adicionar!</Text>}
 
         <View style={styles.plusButtonContainer}>
